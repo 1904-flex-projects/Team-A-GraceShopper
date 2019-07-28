@@ -5,7 +5,6 @@ const Category = require('../db/models/Category');
 const Order = require('../db/models/Order');
 const User = require('../db/models/User');
 const Session = require('../db/models/Session');
-const OrderProduct = require('../db/models/OrderProduct');
 
 // Associations Here
 Product.belongsTo(Supplier);
@@ -16,11 +15,6 @@ User.hasMany(Session);
 Session.belongsTo(User);
 User.hasMany(Order);
 Order.belongsTo(User);
-Order.belongsTo(Session);
-Session.hasMany(Order);
-Order.belongsToMany(Product, {through: 'OrderProduct'});
-Product.belongsToMany(Order, {through: 'OrderProduct'});
-
 
 module.exports = {
   db,
@@ -30,5 +24,4 @@ module.exports = {
   Supplier,
   Category,
   Order,
-  OrderProduct,
 };

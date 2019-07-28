@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(morgan(process.env.MORGAN_MODE || null));
 
 // 'API' routes
-app.use('/api', require('./api'));
+// app.use('/api', require('./api'));
 
 // send index.html
 app.use('*', (req, res, next) => {
