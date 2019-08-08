@@ -38,7 +38,7 @@ describe('Product routes', () => {
   };
 
   beforeEach(async () => {
-    // await db.sync({ force: true });
+    await db.sync({ force: true });
     const createdProds = await Product.bulkCreate([
       sampleProd1,
       sampleProd2,
@@ -70,11 +70,45 @@ describe('Product routes', () => {
 });
 
 describe('Order routes', () => {
+  let products;
+  const sampleProd1 = {
+    name: `Ellie's Brown Ale`,
+    description: `This beautiful, deep russet brew has the sweet and somewhat nutty character of Adam Avery's late (1992-2002) Chocolate Lab, for which it is named.`,
+    imageUrl: '/images/avery_ellies.jpg',
+    price: 5.0,
+  };
+
+  const sampleProd2 = {
+    name: `Naimuns Finest`,
+    description: `This beautiful test wine is delicious for the brave.`,
+    imageUrl: '/images/avery_ellies.jpg',
+    price: 100.0,
+  };
+
+  const sampleProd3 = {
+    name: `Drew Brew`,
+    description: `IBU one million.`,
+    imageUrl: '/images/avery_ellies.jpg',
+    price: 10.0,
+  };
+
+  const sampleProd4 = {
+    name: `Sample 4`,
+    description: `The fourth sample.`,
+    imageUrl: '/images/avery_ellies.jpg',
+    price: 4.0,
+  };
+
   let orders = [];
 
   const order0 = { id: 0, orderTotal: 100, status: COMPLETE };
   const order1 = { id: 1, orderTotal: 200, status: PENDING };
   const order2 = { id: 2, orderTotal: 300, status: PENDING };
+
+  let users = [];
+
+  const user0 = { name: 'user0' };
+  const user1 = { name: 'user1' };
 
   beforeEach(async () => {
     //create test orders
@@ -102,13 +136,19 @@ describe('Order routes', () => {
       expect(responseOrder.body[0].status.toEqual(orders[1].status));
     });
     xit('serves up a specific order with order/session details', async () => {
-      const responseOrder = await agent
-        .get(`api/orders/someOrderId`)
-        .expect(200);
+      const responseOrder = await agent.get(`api/orders/0`).expect(200);
+      expect(responseOrder.body[0]).toEqual(orders[0]);
+
+      const addProductsToOrder = await agent.post('api/orders', {
+        id: 4,
+        orderTotal: 5,
+        status: PENDING,
+      });
+
+      const createdProds = await Product.bulkCreate(sampleProd1, sampleProd2);
+      //addProductsToOrder.addProduct(createdProds[0])
       // check for products within the order
       // check for quantity within order
-
-      // expect(responseProd.body[0].name).toEqual(products[0].name);
     });
   });
   describe('POST `/api/orders', () => {
@@ -117,13 +157,13 @@ describe('Order routes', () => {
       const responseOrder = await agent
         .post('/api/orders', orderPayLoad) //supply an order to the post
         .expect(200);
-      expect(responseOrder.body[0].id).toEqual(order[0].id);
+      expect(responseOrder.body[0]).toEqual(orderPayLoad);
     });
   });
   describe('GET `/api/users/:id/orders', () => {
     xit('serves up a specific users orders ', async () => {
       const responseOrder = await agent
-        .post('/api/users/:someUSERID/orders')
+        .post('/api/users/:1/orders')
         .expect(200);
       // check if the user is correct
       // check order amount
@@ -134,7 +174,7 @@ describe('Order routes', () => {
   describe('GET `/api/users/:id/orders/:id', () => {
     xit('serves up a specific order by a specific user', async () => {
       const responseOrder = await agent
-        .post('/api/users/:someUSERID/orders/:someOrderId')
+        .post('/api/users/:0/orders/:0')
         .expect(200);
       // check orders
 
