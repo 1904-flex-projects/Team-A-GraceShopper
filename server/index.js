@@ -13,7 +13,6 @@ const SESH_NAME = 'SID'; // store in env file
 const expressSession = require('express-session');
 
 // static middleware, body parsing middleware, logging middleware
-app.use(morgan(process.env.MORGAN_MODE || null));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false })); // this helped me see req.body
 app.use(morgan(process.env.MORGAN_MODE || null));
@@ -37,7 +36,11 @@ app.use(async (req, res, next) => {
   const sid = req.session.id;
 
   if (req.session.userId) {
-    console.log('User already in memory:', req.session.userType, req.session.userId);
+    console.log(
+      'User already in memory:',
+      req.session.userType,
+      req.session.userId
+    );
   } else {
     const [session] = await Session.findOrCreate({ where: { sid } });
 
@@ -45,7 +48,14 @@ app.use(async (req, res, next) => {
       const user = await User.findByPk(session.userId);
       req.session.userId = user.id;
       req.session.userType = user.type;
-      console.log('Found user', session.userId, 'req.userId:', req.userId, 'req.userType:', req.userType);
+      console.log(
+        'Found user',
+        session.userId,
+        'req.userId:',
+        req.userId,
+        'req.userType:',
+        req.userType
+      );
     } else {
       const guestUser = await User.create({});
       await session.update({ userId: guestUser.id });

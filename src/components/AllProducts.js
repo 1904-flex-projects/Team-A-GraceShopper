@@ -16,6 +16,7 @@ class AllProducts extends React.Component {
       // Will have banner here
       <div>
         <FrontBanner />
+        <div id="filters">hi</div>
         <Grid container spacing={10} justify="center">
           {products.map(product => {
             const { supplier, category } = product;

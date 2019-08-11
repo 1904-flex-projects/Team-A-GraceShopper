@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import { postSignup } from '../redux/reducers/user';
 import { convertEmptyToNull } from '../../utils';
 
-import { withStyles, makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
+import {
+  withStyles,
+  makeStyles,
+  MuiThemeProvider,
+} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -48,12 +52,12 @@ class SignUp extends React.Component {
       state: '',
       zipCode: '',
       phone: '',
-    }
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  async handleSubmit (event) {
+  async handleSubmit(event) {
     event.preventDefault();
     await this.props.postSignup(convertEmptyToNull(this.state));
     this.setState({
@@ -71,11 +75,11 @@ class SignUp extends React.Component {
     this.props.history.push('/products');
   }
 
-  handleChange (event) {
-    this.setState({[event.target.name]: event.target.value});
+  handleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
-  render () {
+  render() {
     const classes = styles;
     return (
       <Container component="main" maxWidth="xs">
@@ -96,8 +100,8 @@ class SignUp extends React.Component {
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  onChange = {this.handleChange}
-                  value = {this.state.firstName}
+                  onChange={this.handleChange}
+                  value={this.state.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -109,8 +113,8 @@ class SignUp extends React.Component {
                   label="Last Name"
                   name="lastName"
                   autoComplete="lname"
-                  onChange = {this.handleChange}
-                  value = {this.state.lastName}
+                  onChange={this.handleChange}
+                  value={this.state.lastName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -120,8 +124,8 @@ class SignUp extends React.Component {
                   id="address1"
                   label="Address Line 1"
                   name="address1"
-                  onChange = {this.handleChange}
-                  value = {this.state.address1}
+                  onChange={this.handleChange}
+                  value={this.state.address1}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -131,8 +135,8 @@ class SignUp extends React.Component {
                   id="address2"
                   label="Address Line 2"
                   name="address2"
-                  onChange = {this.handleChange}
-                  value = {this.state.address2}
+                  onChange={this.handleChange}
+                  value={this.state.address2}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -142,8 +146,8 @@ class SignUp extends React.Component {
                   id="city"
                   label="City"
                   name="city"
-                  onChange = {this.handleChange}
-                  value = {this.state.city}
+                  onChange={this.handleChange}
+                  value={this.state.city}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -153,8 +157,8 @@ class SignUp extends React.Component {
                   id="state"
                   label="State"
                   name="state"
-                  onChange = {this.handleChange}
-                  value = {this.state.state}
+                  onChange={this.handleChange}
+                  value={this.state.state}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -164,8 +168,8 @@ class SignUp extends React.Component {
                   id="zipCode"
                   label="Zip Code"
                   name="zipCode"
-                  onChange = {this.handleChange}
-                  value = {this.state.zipCode}
+                  onChange={this.handleChange}
+                  value={this.state.zipCode}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -175,7 +179,7 @@ class SignUp extends React.Component {
                   id="country"
                   label="Country"
                   name="country"
-                  onChange = {this.handleChange}
+                  onChange={this.handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -185,8 +189,8 @@ class SignUp extends React.Component {
                   id="phone"
                   label="Phone"
                   name="phone"
-                  onChange = {this.handleChange}
-                  value = {this.state.phone}
+                  onChange={this.handleChange}
+                  value={this.state.phone}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -197,8 +201,8 @@ class SignUp extends React.Component {
                   id="email"
                   label="Email Address"
                   name="email"
-                  onChange = {this.handleChange}
-                  value = {this.state.email}
+                  onChange={this.handleChange}
+                  value={this.state.email}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -210,8 +214,8 @@ class SignUp extends React.Component {
                   label="Password"
                   type="password"
                   id="password"
-                  onChange = {this.handleChange}
-                  value = {this.state.password}
+                  onChange={this.handleChange}
+                  value={this.state.password}
                 />
               </Grid>
             </Grid>
@@ -241,12 +245,15 @@ class SignUp extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  postSignup: (user) => {
+  postSignup: user => {
     dispatch(postSignup(user));
-},
-})
+  },
+});
 
 const StyledSignUp = withStyles(styles)(SignUp);
-const ConnectedSignUp = connect(null, mapDispatchToProps)(StyledSignUp);
+const ConnectedSignUp = connect(
+  null,
+  mapDispatchToProps
+)(StyledSignUp);
 
 export default ConnectedSignUp;

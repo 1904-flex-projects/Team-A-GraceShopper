@@ -30,15 +30,15 @@ class Main extends React.Component {
       <div>
         <MuiThemeProvider theme={theme}>
           <Navbar />
-          <Particles className='particles' params={partOptions} />
-          <div id='main'>
+          <Particles className="particles" params={partOptions} />
+          <div id="main">
             <Switch>
-              <Route path='/login' component={Login} />
-              <Route path='/signup' component={SignUp} />
-              <Route exact path='/' component={AllProducts} />
-              <Route path='/products/:id' component={SingleProductView} />
-              <Redirect from='/home' to='/products' />
-              <Redirect from='/products' to='/' />
+              <Route path="/login" component={Login} />
+              <Route path="/signup" component={SignUp} />
+              <Route exact path="/" component={AllProducts} />
+              <Route path="/products/:id" component={SingleProductView} />
+              <Redirect from="/home" to="/products" />
+              <Redirect from="/products" to="/" />
             </Switch>
           </div>
         </MuiThemeProvider>

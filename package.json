@@ -4,12 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "npx jest ./tests/setup.js ./tests/**/*.spec.js",
+    "test:dev": "npx jest ./tests/setup.js ./tests/**/*.spec.js --watch",
     "start": "node server/index.js",
     "build": "webpack -p",
+<<<<<<< HEAD
     "test": "npx jest ./tests/setup.js ./tests/**/*.spec.js",
+=======
+>>>>>>> 95d2be256349b9844b107e3afb30e162fe01736f
     "start:dev": "npx webpack src/index.js -o ./public/bundle.js --watch & npx nodemon ./server/index.js -q",
-    "test:dev": "npx jest ./tests/setup.js ./tests/**/*.spec.js --watch",
-    "seed": "node seed.js"
+    "seed": "node seed.js",
+    "lint": "./node_modules/.bin/eslint \"**/*.{js,jsx}\""
   },
   "dependencies": {
     "@material-ui/core": "^4.2.1",
@@ -53,7 +58,12 @@
     "babel-loader": "^8.0.4",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
     "jest": "^24.8.0",
+    "prettier": "^1.18.2",
     "prop-types": "^15.7.2",
     "redux-devtools-extension": "^2.13.0",
     "supertest": "^4.0.2",

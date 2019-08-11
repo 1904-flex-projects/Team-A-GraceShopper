@@ -1,6 +1,7 @@
 export const convertEmptyToNull = object => {
   for (let key in object) {
-    if (object.hasOwnProperty(key)) {
+    // changed to Object.prototype for linting purpose, should still work the same way
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
       if (object[key] === '') {
         object[key] = null;
       }

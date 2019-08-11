@@ -5,7 +5,13 @@ import { Link, withRouter } from 'react-router-dom';
 import { postLogout } from '../redux/reducers/user';
 
 // Material UI requirements
-import { AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+} from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import LocalDrink from '@material-ui/icons/LocalDrink';
 import { withStyles } from '@material-ui/core/styles';
@@ -26,37 +32,45 @@ class Navbar extends React.Component {
     const { logout, loggedIn, classes } = this.props;
     return (
       <div className={classes.root}>
-        <AppBar position='static' color='secondary'>
+        <AppBar position="static" color="secondary">
           <Toolbar>
-            <Link to='/'>
-              <LocalDrink color='primary' style={{ marginRight: '15px' }} />
+            <Link to="/">
+              <LocalDrink color="primary" style={{ marginRight: '15px' }} />
             </Link>
             <Typography
-              variant='h6'
-              color='inherit'
+              variant="h6"
+              color="inherit"
               className={classes.title}
               component={Link}
-              to='/'
+              to="/"
               style={{ textDecoration: 'none' }}
             >
               BEEROTOPIA
             </Typography>
             {loggedIn ? (
               <div>
-                <Button color='inherit' onClick={() => logout()}>
+                <Button color="inherit" onClick={() => logout()}>
                   Logout
                 </Button>
-                <IconButton edge='end' aria-label='Account of current user' aria-haspopup='true' color='inherit'>
+                <IconButton
+                  edge="end"
+                  aria-label="Account of current user"
+                  aria-haspopup="true"
+                  color="inherit"
+                >
                   <AccountCircle />
                 </IconButton>
               </div>
             ) : (
               <div>
-                <Button component={Link} to='/login' color='inherit'>
+                <Button component={Link} to="/login" color="inherit">
                   Login
                 </Button>
-                <Button component={Link} to='/signup' color='inherit'>
+                <Button component={Link} to="/signup" color="inherit">
                   Sign Up
+                </Button>
+                <Button component={Link} to="/cart" color="inherit">
+                  Cart (0)
                 </Button>
               </div>
             )}

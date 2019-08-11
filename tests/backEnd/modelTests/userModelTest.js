@@ -14,11 +14,11 @@ describe('The `User` model', () => {
    */
 
   let user;
-  beforeEach(() => {
-    user = User.build({
-      user fields
-    });
-  });
+  // beforeEach(() => {
+  //   user = User.build({
+  //     user fields
+  //   });
+  // });
 
   describe('required attributes', () => {
     it('includes email and password', async () => {

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   Grid,
@@ -49,7 +50,7 @@ const SPVFunctional = props => {
         <ButtonBase>
           <img className={classes.img} alt="complex" src={product.imageUrl} />
         </ButtonBase>
-        <Grid item sm={12} sm container>
+        <Grid item sm>
           <Grid item sm container direction="column" spacing={2}>
             <Typography variant="h2">{product.name}</Typography>
             <Typography variant="subtitle1" style={{ marginLeft: '5px' }}>
