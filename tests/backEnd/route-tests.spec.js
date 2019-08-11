@@ -39,7 +39,7 @@ describe('Product routes', () => {
       sampleProd3,
       sampleProd4,
     ]);
-    products = createdProds.map(prods => prods.dataValues);
+    products = createdProds.map(prods => prods.dataValues).reverse();
     return products;
   });
   //Route for fetching products
@@ -54,12 +54,12 @@ describe('Product routes', () => {
   // Route for fetching single product
   describe('GET /api/products/:id', () => {
     it('serves up single product', async () => {
-      const prodId = products[0].id;
+      const prodId = products[3].id;
       const responseProd = await agent
         .get(`/api/products/${prodId}`)
         .expect(200);
       expect(responseProd.body.name).toEqual("Ellie's Brown Ale");
-      const prodId1 = products[3].id;
+      const prodId1 = products[0].id;
       const responseProd1 = await agent
         .get(`/api/products/${prodId1}`)
         .expect(200);
