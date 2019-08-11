@@ -1,6 +1,13 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { Navbar, Login, SignUp, AllProducts, SingleProductView } from './index';
+import {
+  Navbar,
+  Login,
+  SignUp,
+  AllProducts,
+  SingleProductView,
+  Cart,
+} from './index';
 import { fetchAuthStatus } from '../redux/reducers/user';
 import store from '../redux/store';
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -37,6 +44,7 @@ class Main extends React.Component {
               <Route path="/signup" component={SignUp} />
               <Route exact path="/" component={AllProducts} />
               <Route path="/products/:id" component={SingleProductView} />
+              <Route path="/cart" component={Cart} />
               <Redirect from="/home" to="/products" />
               <Redirect from="/products" to="/" />
             </Switch>

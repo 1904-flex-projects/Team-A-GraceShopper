@@ -6,6 +6,9 @@ body {
 
 #main {
   margin: 2em;
+  /* align-content: center;
+  align-items: center;
+  justify-content: center; */
 }
 
 #front-container {

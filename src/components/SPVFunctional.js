@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Grid,
@@ -26,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(2),
     margin: 'auto',
-    maxWidth: '50em',
+    maxWidth: '80em',
     maxHeight: 'auto',
   },
   img: {
@@ -42,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 
 const SPVFunctional = props => {
   const classes = useStyles();
-  const { product } = props;
+  const { product, addToCart } = props;
   const { supplier, category } = product;
   return product && category ? (
     <Paper className={classes.paper}>
@@ -101,7 +100,7 @@ const SPVFunctional = props => {
               color="secondary"
               aria-label="add"
               onClick={() => {
-                this.props.addToCart(product);
+                addToCart(product);
                 console.log('Added to cart'); //add product to cart
               }}
             >

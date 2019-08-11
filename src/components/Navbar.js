@@ -70,7 +70,9 @@ class Navbar extends React.Component {
                   Sign Up
                 </Button>
                 <Button component={Link} to="/cart" color="inherit">
-                  Cart (0)
+                  {this.props.cartLen
+                    ? `Cart (${this.props.cartLen})`
+                    : 'Cart (0)'}
                 </Button>
               </div>
             )}
@@ -84,6 +86,7 @@ class Navbar extends React.Component {
 const mapStateToProps = state => ({
   loggedInUser: state.users.loggedInUser,
   loggedIn: state.users.loggedIn,
+  cartLen: state.cart.length, // doesn't work yet TODO
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

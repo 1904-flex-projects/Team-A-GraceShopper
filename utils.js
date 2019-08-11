@@ -18,3 +18,22 @@ export const truncate = (desc, someHeight) => {
   }
   return desc;
 };
+
+import React from 'react';
+export const filterHelper = prodArr => {
+  return prodArr
+    .map(product => {
+      const { category } = product;
+      return category.name;
+    })
+    .filter((elem, ind, arr) => {
+      if (arr.indexOf(elem) === ind) return elem;
+    })
+    .map((catName, ind) => {
+      return (
+        <option key={ind} value={catName}>
+          {catName}
+        </option>
+      );
+    });
+};

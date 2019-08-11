@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchSingleProduct } from '../redux/reducers/product';
+import { addProductToCart } from '../redux/reducers/cart';
 import store from '../redux/store';
 import { SPVFunctional } from './index';
 
@@ -11,10 +12,16 @@ class SingleProductView extends Component {
     store.dispatch(singleProdThunk);
   }
   render() {
-    const { singleProduct } = this.props;
-    return singleProduct ? <SPVFunctional product={singleProduct} /> : <div />;
+    const { singleProduct, addToCart } = this.props;
+    return singleProduct ? (
+      <SPVFunctional product={singleProduct} addToCart={addToCart} />
+    ) : (
+      <div />
+    );
   }
 }
+
+// TODO add proptypes
 
 const mapStateToProps = state => {
   return {
