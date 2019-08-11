@@ -3,21 +3,10 @@ import axios from 'axios';
 // Constants
 const PRODUCT_REQUEST = 'PRODUCT_REQUEST';
 const PRODUCT_REQUEST_FAILURE = 'PRODUCT_REQUEST_FAILURE';
-const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
-const CHECK_FOR_PENDING_ORDER = 'CHECK_FOR_PENDING_ORDER';
-const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
+const GET_PRODUCT = 'GET_PRODUCT';
+const GET_PRODUCTS = 'GET_PRODUCTS';
 
 // Action Creators
-const getAllProducts = products => ({
-  type: GET_ALL_PRODUCTS,
-  products,
-});
-
-const getSingleProduct = product => ({
-  type: GET_SINGLE_PRODUCT,
-  product,
-});
-
 const fetchingProductData = () => ({
   type: PRODUCT_REQUEST,
 });
@@ -28,48 +17,48 @@ const fetchingProductDataError = error => ({
   payload: error,
 });
 
-const checkPendingOrder = sessionId => ({
-  type: CHECK_FOR_PENDING_ORDER,
-  sessionId,
+const getProduct = product => ({
+  type: GET_PRODUCT,
+  product,
+});
+
+const getProducts = (products, category = null, supplier = null) => ({
+  type: GET_PRODUCTS,
+  products,
+  category,
+  supplier,
 });
 
 // Thunks
-export const fetchAllProducts = () => dispatch => {
+export const postProducts = products => dispatch => {
+  axios
+  .post('/api/products', products)
+  .then(({ data }) => {
+    dispatch(getProducts(data));
+  })
+  .catch(error => console.log(error))
+}
+
+export const fetchProducts = (category = null, supplier = null) => dispatch => {
   dispatch(fetchingProductData());
   axios
-    .get('/api/products')
-    .then(res => res.data)
-    .then(products => dispatch(getAllProducts(products)))
+    .get(`/api/products?category=${category}&brewery=${supplier}`)
+    .then(({ data }) => dispatch(getProducts(data)))
     .catch(error => dispatch(fetchingProductDataError(error)));
 };
 
-export const fetchOrCreateOrder = () => dispatch => {
-  // use the cookie to fetch the session from db?
-  // fetch the session
-  // Order.findOne({where: sessionId, status: 'PENDING'})
-  // if no order, Order.create
-  //if order, return order
-};
-
-export const addProductToOrder = () => dispatch => {
-  // takes order id and product id
-  // check if that product already exists in this order
-  // if exists, increase quantity by 1
-  // if it doesn't exist, OrderProduct.create(orderId, productId, productQuantity: 1)
-};
-export const fetchSingleProduct = prodId => dispatch => {
+export const fetchProduct = productId => dispatch => {
+  dispatch(fetchingProductData());
   axios
-    .get(`/api/products/${prodId}`)
-    .then(res => res.data)
-    .then(product => dispatch(getSingleProduct(product)))
+    .get(`/api/products/${productId}`)
+    .then(({data}) => dispatch(getProduct(data)))
     .catch(error => console.error(error));
 };
 
 // Reducers
 const initialState = {
   products: [],
-  suppliers: [],
-  singleProduct: {},
+  product: {},
   isFetching: false,
 };
 
@@ -77,13 +66,10 @@ const products = (state = initialState, action) => {
   switch (action.type) {
     case PRODUCT_REQUEST:
       return { ...state, isFetching: true };
-    case GET_ALL_PRODUCTS:
-      return { products: action.products, isFetching: false, cart: state.cart };
-    case GET_SINGLE_PRODUCT:
-      return {
-        ...state,
-        singleProduct: action.product,
-      };
+    case GET_PRODUCTS:
+      return { ...state, products: action.products, isFetching: false };
+    case GET_PRODUCT:
+      return { ...state, product: action.product, isFetching: false };
     default:
       return state;
   }

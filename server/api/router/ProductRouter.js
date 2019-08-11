@@ -1,25 +1,40 @@
 const router = require('express').Router();
 const { Product, Category, Supplier } = require('../../db/index');
 
-// api/products
+// POST API/products
+router.post('/', async (req, res, next) => {
+  try {
+    const { name, description, imageUrl, price, category, supplier } = req.body;
+    const product = await Product.create({name, description, imageUrl, price, categoryId: category.id, supplierId: supplier.id});
+    res.sendStatus(200).send('Product created successfully:', product);
+  } catch (error) {
+    console.error(error);
+  }
+})
+
+// GET API/products
 router.get('/', async (req, res, next) => {
   try {
-    const products = await Product.findAll({
-      include: [{ model: Supplier }, { model: Category }],
-    });
+    const { categoryId, supplierId } = req.query;
+    let whereCondition = {};
+    if (categoryId) {
+      whereCondition.categoryId = categoryId;
+    }
+    if (supplierId) {
+      whereCondition.supplierId = supplierId;
+    }
+    const products = await Product.findAll({ include: [Supplier, Category], where: whereCondition });
     res.json(products);
   } catch (error) {
     console.error(error);
   }
 });
 
-// api/products/:id
+// GET API/products/:id
 router.get('/:id', async (req, res, next) => {
   try {
-    const prodId = req.params.id;
-    const product = await Product.findByPk(prodId, {
-      include: [{ model: Supplier }, { model: Category }],
-    });
+    const id = req.params.id;
+    const product = await Product.findByPk(id, { include: [Supplier, Category]});
     res.json(product);
   } catch (error) {
     console.error(error);
