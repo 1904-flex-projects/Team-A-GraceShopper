@@ -8,10 +8,6 @@
     "test:dev": "npx jest ./tests/setup.js ./tests/**/*.spec.js --watch",
     "start": "node server/index.js",
     "build": "webpack -p",
-<<<<<<< HEAD
-    "test": "npx jest ./tests/setup.js ./tests/**/*.spec.js",
-=======
->>>>>>> 95d2be256349b9844b107e3afb30e162fe01736f
     "start:dev": "npx webpack src/index.js -o ./public/bundle.js --watch & npx nodemon ./server/index.js -q",
     "seed": "node seed.js",
     "lint": "./node_modules/.bin/eslint \"**/*.{js,jsx}\""
