@@ -83,7 +83,7 @@ app.use((error, req, res, next) => {
 db.sync()
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`Server listening on PORT: ${PORT}`);
+      //console.log(`Server listening on PORT: ${PORT}`);
     });
   })
   .catch(e => console.error(e));

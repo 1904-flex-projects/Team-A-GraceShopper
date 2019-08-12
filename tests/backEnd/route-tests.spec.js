@@ -47,9 +47,9 @@ describe('Product routes', () => {
   describe('GET /api/products', () => {
     it('serves up all products', async () => {
       const responseProd = await agent.get('/api/products').expect(200);
-      expect(responseProd.body[0].name).toEqual(products[3].name);
-      expect(responseProd.body[2].name).toEqual(products[1].name);
-      expect(responseProd.body[3].name).toEqual(products[0].name);
+      expect(responseProd.body[0].name).toEqual(products[0].name);
+      expect(responseProd.body[2].name).toEqual(products[2].name);
+      expect(responseProd.body[3].name).toEqual(products[3].name);
     });
   });
   // Route for fetching single product
