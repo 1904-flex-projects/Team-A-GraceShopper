@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Order, User, Product, OrderProduct } = require('../../db/index');
 
-// API/orders
+// GET API/orders
 router.get('/', async (req, res) => {
   try {
     const orders = await Order.findAll({
@@ -15,57 +15,26 @@ router.get('/', async (req, res) => {
   }
 });
 
+// POST API/orders
 router.post('/', async (req, res) => {
-  //   try {
-  //     const { id, user, session, orderTotal, product } = req.body;
-  //     const order = await Order.create({id, orderTotal});
-  //     if (req.userId) {
-  //       await Order.update{(user);
-  //     }
-  //     const orderProducts = await OrderProduct.create();
-  //     await order.addProduct
-  //     const joinedOrder = Order.findByPk(order.id, {include: [OrderProduct]});
-  //     res.json(joinedOrder);
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
+  try {
+    const { addUpdateCart } = Order;
+    const { orderProducts } = req.body;
+    const userId = req.session.userId;
+    const order = await addUpdateCart(orderProducts, userId);
+    res.sendStatus(200).send('Order posted successfully:', order);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 // /api/orders/:id (specific order, which includes products)
-router.get('/orders/:id', async (req, res) => {
-  try {
-    const { amount } = req.body;
-    const [ products ] = req.body;
-    const sessionId = req.session.id;
-    const userId = req.session.userId;
-    const [order, wasCreated] = await Order.findOrCreate({where: {userId, status: 'pending'}, defaults: {sessionId, orderTotal: amount}});
-    if (!wasCreated) {
-      await order.update({orderTotal: order.orderTotal + amount});
-    }
-    products.forEach(async (productObj) => {
-      const { product, quantity } = productObj;
-      if (!wasCreated) {
-        const orderHasProduct = order.hasProduct(product);
-        if (orderHasProduct) {
-          const joinRow = await OrderProduct.findOne({
-            where: {
-              orderId: order.id,
-              productId: product.id,
-            }
-          });
-          await joinRow.update({
-            productQuantity: joinRow.productQuantity + quantity
-          });
-        }
-      } else {
-        await order.addProduct(product, { productQuantity: quantity });
-      }
-    })
-    res.sendStatus(200).send('Order posted successfully:', order.id);
-  } catch (e) {
-    console.error(e);
-  }
-});
+// router.get('/orders/:id', async (req, res) => {
+//   try {
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
 
 // NOT TESTED YET
 // // /api/orders/:id (specific order, which includes products)

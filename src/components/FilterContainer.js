@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   NativeSelect,
   FormControl,
@@ -40,4 +41,8 @@ const FilterContainer = props => {
   );
 };
 
+// proptypes to do typechecking
+FilterContainer.propTypes = {
+  products: PropTypes.array,
+};
 export default FilterContainer;

@@ -45,8 +45,6 @@ class Main extends React.Component {
               <Route exact path="/" component={AllProducts} />
               <Route path="/products/:id" component={SingleProductView} />
               <Route path="/cart" component={Cart} />
-              <Redirect from="/home" to="/products" />
-              <Redirect from="/products" to="/" />
             </Switch>
           </div>
         </MuiThemeProvider>

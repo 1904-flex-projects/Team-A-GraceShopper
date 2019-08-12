@@ -4,7 +4,7 @@ import axios from 'axios';
 const ORDER_REQUEST = 'ORDER_REQUEST';
 const ORDER_REQUEST_FAILURE = 'ORDER_REQUEST_FAILURE';
 const GET_ORDER = 'GET_ORDER';
-const GET_ALL_ORDERS = 'GET_ALL_ORDERS';
+const GET_ORDERS = 'GET_ORDERS';
 
 // Action Creators
 const fetchingOrderData = () => ({
@@ -17,34 +17,79 @@ const fetchingOrderDataError = error => ({
     payload: error,
 });
 
-const getOrder = order => ({
+const getOrder = (order, status = null) => ({
     type: GET_ORDER,
-    order,
+		order,
+		status,
   });
 
-const getAllOrders = orders => ({
-    type: GET_ALL_ORDERS,
-    orders,
+const getOrders = (orders, status = null) => ({
+    type: GET_ORDERS,
+		orders,
+		status,
 });
 
 // Thunks
 export const postOrder = order => dispatch => {
     axios.post('/api/orders', order)
-    .then(res => {
-      dispatch(getOrder(res.data));
+    .then(({ data }) => {
+      dispatch(getOrder(data));
     })
-    .catch(e => console.log(e))
+    .catch(error => console.log(error))
 }
 
-export const fetchAllOrders = () => dispatch => {
+export const fetchOrdersByStatus = orderStatus => dispatch => {
     dispatch(fetchingOrderData());
     axios
-      .get('/api/orders')
-      .then(res => res.data)
-      .then(orders => dispatch(getAllOrders(orders)))
+      .get(`/api/orders?${orderStatus}`)
+      .then(({ data }) => dispatch(getOrders(data)))
       .catch(error => dispatch(fetchingOrderDataError(error)));
   };
 
-// Reducers
+export const fetchOrdersByUser = user => dispatch => {
+    dispatch(fetchingOrderData());
+    axios
+      .get(`/api/users/${user.id}/orders`)
+      .then(({ data }) => dispatch(getOrders(data)))
+      .catch(error => dispatch(fetchingOrderDataError(error)));
+}
 
-//   export default orders;
+export const fetchOrder = (order, user) => dispatch => {
+    dispatch(fetchingOrderData());
+    axios
+			.get(`/api/users/${user.id}/orders/${order.id}`)
+			.then(({ data }) => dispatch(getOrder(data)))
+			.catch(error => dispatch(fetchingOrderDataError(error)));
+};
+
+// Reducers
+const initialState = {
+    orders: [],
+		order: {},
+		carts: [],
+		cart: {},
+    isFetching: false,
+}
+
+const orders = (state = initialState, action) => {
+    switch (action.type) {
+      case ORDER_REQUEST:
+        return { ...state, isFetching: true };
+      case GET_ORDERS:
+					if (action.status === 'PENDING') {
+						return { ...state, carts: action.orders, isFetching: false };
+					} else {
+						return { ...state, orders: action.orders, isFetching: false };
+					}
+			case GET_ORDER:
+				if (action.status === 'PENDING') {
+					return { ...state, cart: action.order, isFetching: false };
+				} else {
+					return { ...state, order: action.order, isFetching: false };
+					}
+      default:
+        return state;
+    }
+  };
+
+export default orders;
