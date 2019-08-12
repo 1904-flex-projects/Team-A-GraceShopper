@@ -7,12 +7,15 @@ import {
   AllProducts,
   SingleProductView,
   Cart,
+  UserPage,
+  Checkout,
 } from './index';
 import { fetchAuthStatus } from '../redux/reducers/user';
 import store from '../redux/store';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme, { partOptions } from '../themes';
 import Particles from 'react-particles-js';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 class Main extends React.Component {
   constructor(props) {
@@ -26,6 +29,7 @@ class Main extends React.Component {
 
   componentDidMount() {
     // getAuthStatus hits /api/auth and puts on the store
+    console.log('this works?');
     this.getAuthStatus();
   }
   componentDidUpdate() {
@@ -36,6 +40,7 @@ class Main extends React.Component {
     return (
       <div>
         <MuiThemeProvider theme={theme}>
+          <CssBaseline />
           <Navbar />
           <Particles className="particles" params={partOptions} />
           <div id="main">
@@ -45,6 +50,8 @@ class Main extends React.Component {
               <Route exact path="/" component={AllProducts} />
               <Route path="/products/:id" component={SingleProductView} />
               <Route path="/cart" component={Cart} />
+              <Route path="/users/:id" component={UserPage} />
+              <Route path="/checkout" component={Checkout} />
             </Switch>
           </div>
         </MuiThemeProvider>

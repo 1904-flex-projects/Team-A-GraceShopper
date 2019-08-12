@@ -8,35 +8,38 @@ const SET_AUTH_STATUS = 'SET_AUTH_STATUS';
 // Action Creators
 const setLoggedInUser = user => ({
   type: SET_LOGGED_IN_USER,
-  user,
+  user
 });
 
 const clearLoggedInUser = () => ({
-  type: CLEAR_LOGGED_IN_USER,
+  type: CLEAR_LOGGED_IN_USER
 });
 
-const setAuthStatus = authStatus => ({
+const setAuthStatus = (authStatus, loggedUser) => ({
   type: SET_AUTH_STATUS,
   authStatus,
+  loggedUser
 });
 
 // Thunks
 
 export const fetchAuthStatus = () => dispatch => {
   return axios
-    .get('api/auth')
+    .get('/api/auth')
     .then(res => {
+      console.log(res.data);
       console.log('fetchAuthStatus thunk', res.data.loggedIn);
-      dispatch(setAuthStatus(res.data.loggedIn));
+      dispatch(setAuthStatus(res.data.loggedIn, res.data.loggedUser));
     })
     .catch(e => console.log(e));
 };
 
-export const postLogin = user => dispatch => {
+export const postLogin = (user, history) => dispatch => {
   axios
-    .post('api/auth/login', user)
+    .post('/api/auth/login', user)
     .then(res => {
       dispatch(setLoggedInUser(res.data));
+      history.push('/');
       return fetchAuthStatus()(dispatch);
     })
     .then(() => {
@@ -45,11 +48,12 @@ export const postLogin = user => dispatch => {
     .catch(e => console.error(e));
 };
 
-export const postSignup = user => dispatch => {
+export const postSignup = (user, history) => dispatch => {
   axios
     .post('/api/auth/signup', user)
     .then(res => {
       dispatch(setLoggedInUser(res.data));
+      history.push('/');
     })
     .catch(e => console.log(e));
 };
@@ -59,7 +63,7 @@ export const postLogout = history => dispatch => {
     .post('/api/auth/logout')
     .then(() => {
       dispatch(clearLoggedInUser());
-      history.push('/products');
+      history.push('/');
     })
     .catch(e => console.log(e));
 };
@@ -67,7 +71,7 @@ export const postLogout = history => dispatch => {
 // Reducers
 const initialState = {
   loggedInUser: {},
-  loggedIn: false,
+  loggedIn: false
 };
 
 const users = (state = initialState, action) => {
@@ -75,9 +79,13 @@ const users = (state = initialState, action) => {
     case SET_LOGGED_IN_USER:
       return { ...state, loggedInUser: action.user };
     case CLEAR_LOGGED_IN_USER:
-      return { ...state, loggedInUser: null };
+      return { ...state, loggedInUser: null, loggedIn: false };
     case SET_AUTH_STATUS:
-      return { ...state, loggedIn: action.authStatus };
+      return {
+        ...state,
+        loggedInUser: action.loggedUser,
+        loggedIn: action.authStatus
+      };
     default:
       return state;
   }

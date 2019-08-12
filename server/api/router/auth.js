@@ -2,12 +2,23 @@ const router = require('express').Router();
 const { User, Session } = require('../../db/index');
 
 // check auth status
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   console.log('request', req.session.userId, req.session.userType);
+  // need to check here if user is logged in
+  const loggedBool =
+    typeof req.session.userId === 'string' &&
+    req.session.userType === 'registered';
+
+  // find the logged in user if it exists to attach to payload and use in front end for auth
+  const loggedUser = loggedBool
+    ? await User.findOne({
+        where: { id: req.session.userId, type: 'registered' }
+      })
+    : {};
+
   res.send({
-    loggedIn:
-      typeof req.session.userId === 'string' &&
-      req.session.userType === 'registered',
+    loggedIn: loggedBool,
+    loggedUser: loggedUser
   });
 });
 
@@ -25,11 +36,12 @@ router.post('/login', async (req, res) => {
       } else {
         const guestUserSession = await Session.findByPk(req.session.id);
         await guestUserSession.update({
-          userId: user.id,
+          userId: user.id
         });
 
         req.session.userType = 'registered';
-        res.redirect('/');
+        req.session.userId = guestUserSession.get('userId');
+        res.json(req.session);
       }
     } else {
       res.sendStatus(500);
@@ -54,7 +66,7 @@ router.post('/signup', async (req, res) => {
       city,
       state,
       zipCode,
-      phone,
+      phone
     } = req.body;
 
     if (firstName && lastName && email && password) {
@@ -74,11 +86,11 @@ router.post('/signup', async (req, res) => {
           city,
           state,
           zipCode,
-          phone,
+          phone
         });
         console.log('Signed up and logged in as:', registeredUser.id);
         req.session.userType = 'registered';
-        res.redirect('/');
+        res.json(req.session);
       }
     } else {
       res.sendStatus(500);

@@ -10,7 +10,7 @@ import {
   Toolbar,
   Typography,
   Button,
-  IconButton,
+  IconButton
 } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import LocalDrink from '@material-ui/icons/LocalDrink';
@@ -20,56 +20,65 @@ import { withStyles } from '@material-ui/core/styles';
 // using Material UI's makeStyles to create style objects
 const styles = () => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   title: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 });
 
 class Navbar extends React.Component {
   render() {
-    const { logout, loggedIn, classes } = this.props;
+    const { logout, loggedIn, classes, loggedInUser } = this.props;
     return (
       <div className={classes.root}>
-        <AppBar position="static" color="secondary">
+        <AppBar position='static' color='secondary'>
           <Toolbar>
-            <Link to="/">
-              <LocalDrink color="primary" style={{ marginRight: '15px' }} />
+            <Link to='/'>
+              <LocalDrink color='primary' style={{ marginRight: '15px' }} />
             </Link>
             <Typography
-              variant="h6"
-              color="inherit"
+              variant='h6'
+              color='inherit'
               className={classes.title}
               component={Link}
-              to="/"
+              to='/'
               style={{ textDecoration: 'none' }}
             >
               BEEROTOPIA
             </Typography>
             {loggedIn ? (
               <div>
-                <Button color="inherit" onClick={() => logout()}>
+                <Button color='inherit' onClick={() => logout()}>
                   Logout
                 </Button>
                 <IconButton
-                  edge="end"
-                  aria-label="Account of current user"
-                  aria-haspopup="true"
-                  color="inherit"
+                  edge='end'
+                  aria-label='Account of current user'
+                  aria-haspopup='true'
+                  color='inherit'
                 >
-                  <AccountCircle />
+                  <Link to={`/users/${loggedIn ? loggedInUser.id : ''}`}>
+                    <AccountCircle />
+                  </Link>
                 </IconButton>
+                <Button>Greetings, {loggedInUser.firstName}</Button>
+                {/* users cart */}
+                {/* <Button component={Link} to='/cart' color='inherit'>
+                  {this.props.cartLen
+                    ? `Cart (${this.props.cartLen})`
+                    : 'Cart (0)'}
+                </Button> */}
               </div>
             ) : (
               <div>
-                <Button component={Link} to="/login" color="inherit">
+                <Button component={Link} to='/login' color='inherit'>
                   Login
                 </Button>
-                <Button component={Link} to="/signup" color="inherit">
+                <Button component={Link} to='/signup' color='inherit'>
                   Sign Up
                 </Button>
-                <Button component={Link} to="/cart" color="inherit">
+                <Button component={Link} to='/cart' color='inherit'>
                   {this.props.cartLen
                     ? `Cart (${this.props.cartLen})`
                     : 'Cart (0)'}
@@ -86,13 +95,13 @@ class Navbar extends React.Component {
 const mapStateToProps = state => ({
   loggedInUser: state.users.loggedInUser,
   loggedIn: state.users.loggedIn,
-  cartLen: state.cart.length, // doesn't work yet TODO
+  cartLen: state.cart.length // doesn't work yet TODO
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   logout: () => {
     dispatch(postLogout(ownProps.history));
-  },
+  }
 });
 
 // proptypes to do typechecking
@@ -100,7 +109,7 @@ Navbar.propTypes = {
   loggedInUser: PropTypes.object,
   loggedIn: PropTypes.bool,
   logout: PropTypes.func,
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 const StyledNavbar = withStyles(styles)(Navbar);
