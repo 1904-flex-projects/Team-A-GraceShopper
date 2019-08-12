@@ -2,6 +2,8 @@ language: node_js
 node_js:
   - '12'
 
+before_install:
+  - npm i npm@12.0.0
 services:
   - postgresql
 
@@ -12,3 +14,10 @@ jobs:
   include:
     -script: npm run lint
     name: 'running ESLint'
+
+deploy:
+  provider: script
+  script: 'cp .npmrc.template $HOME/.npmrc && npm publish'
+  skip_cleanup: false
+  on:
+    tags: true
