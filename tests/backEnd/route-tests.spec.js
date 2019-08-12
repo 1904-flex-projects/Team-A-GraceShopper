@@ -2,7 +2,7 @@ const app = require('../../server/index');
 const agent = require('supertest')(app);
 const Sequelize = require('sequelize');
 const { db } = require('../../server/db/index');
-const { Product, Order, OrderProduct } = require('../../server/db/index');
+const { Product, Order, Session } = require('../../server/db/index');
 const PENDING = 'PENDING';
 const COMPLETE = 'COMPLETE';
 describe('Product routes', () => {
@@ -32,6 +32,12 @@ describe('Product routes', () => {
     price: 4.0,
   };
 
+  // beforeAll(async () => {
+  //   await db.sync({ force: true });
+  // });
+  // afterAll(async () => {
+  //   await db.sync({ force: true });
+  // });
   beforeEach(async () => {
     const createdProds = await Product.bulkCreate([
       sampleProd1,
@@ -40,7 +46,7 @@ describe('Product routes', () => {
       sampleProd4,
     ]);
 
-    products = createdProds.map(prods => prods.dataValues);
+    products = createdProds.map(prods => prods.dataValues).reverse();
     return products;
   });
   //Route for fetching products
@@ -55,12 +61,12 @@ describe('Product routes', () => {
   // Route for fetching single product
   describe('GET /api/products/:id', () => {
     it('serves up single product', async () => {
-      const prodId = products[0].id;
+      const prodId = products[3].id;
       const responseProd = await agent
         .get(`/api/products/${prodId}`)
         .expect(200);
       expect(responseProd.body.name).toEqual("Ellie's Brown Ale");
-      const prodId1 = products[3].id;
+      const prodId1 = products[0].id;
       const responseProd1 = await agent
         .get(`/api/products/${prodId1}`)
         .expect(200);
