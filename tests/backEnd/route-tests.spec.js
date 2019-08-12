@@ -39,27 +39,28 @@ describe('Product routes', () => {
       sampleProd3,
       sampleProd4,
     ]);
-    products = createdProds.map(prods => prods.dataValues).reverse();
+
+    products = createdProds.map(prods => prods.dataValues);
     return products;
   });
   //Route for fetching products
   describe('GET /api/products', () => {
     it('serves up all products', async () => {
       const responseProd = await agent.get('/api/products').expect(200);
-      expect(responseProd.body[0].name).toEqual(products[0].name);
-      expect(responseProd.body[2].name).toEqual(products[2].name);
-      expect(responseProd.body[3].name).toEqual(products[3].name);
+      expect(responseProd.body[0].name).toEqual(products[3].name);
+      expect(responseProd.body[2].name).toEqual(products[1].name);
+      expect(responseProd.body[3].name).toEqual(products[0].name);
     });
   });
   // Route for fetching single product
   describe('GET /api/products/:id', () => {
     it('serves up single product', async () => {
-      const prodId = products[3].id;
+      const prodId = products[0].id;
       const responseProd = await agent
         .get(`/api/products/${prodId}`)
         .expect(200);
       expect(responseProd.body.name).toEqual("Ellie's Brown Ale");
-      const prodId1 = products[0].id;
+      const prodId1 = products[3].id;
       const responseProd1 = await agent
         .get(`/api/products/${prodId1}`)
         .expect(200);
