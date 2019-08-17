@@ -5,6 +5,8 @@ const ORDER_REQUEST = 'ORDER_REQUEST';
 const ORDER_REQUEST_FAILURE = 'ORDER_REQUEST_FAILURE';
 const GET_ORDER = 'GET_ORDER';
 const GET_ORDERS = 'GET_ORDERS';
+const CHECKOUT = 'CHECKOUT';
+const UPDATE_CARTLEN = 'UPDATE_CARTLEN';
 
 // Action Creators
 const fetchingOrderData = () => ({
@@ -17,10 +19,10 @@ const fetchingOrderDataError = error => ({
     payload: error,
 });
 
-const getOrder = (order, status = null) => ({
+const getOrder = (order) => ({
     type: GET_ORDER,
 		order,
-		status,
+		status: order.status,
   });
 
 const getOrders = (orders, status = null) => ({
@@ -29,11 +31,22 @@ const getOrders = (orders, status = null) => ({
 		status,
 });
 
+const postCheckout = (orderDetails) => ({
+  type: CHECKOUT,
+  orderDetails,
+})
+
+const updateCartLen = (length) => ({
+  type: UPDATE_CARTLEN,
+  length,
+})
+
 // Thunks
 export const postOrder = order => dispatch => {
     axios.post('/api/orders', order)
     .then(({ data }) => {
       dispatch(getOrder(data));
+      dispatch(updateCartLen(data.cartLen));
     })
     .catch(error => console.log(error))
 }
@@ -62,12 +75,23 @@ export const fetchOrder = (order, user) => dispatch => {
 			.catch(error => dispatch(fetchingOrderDataError(error)));
 };
 
+export const checkout = (orderDetails) => dispatch => {
+  const { order } = orderDetails;
+  axios
+  .post(`/api/orders/checkout/${order.id}`, orderDetails)
+  .then(({ data }) => {
+    dispatch(postCheckout(data));
+  })
+  .catch(error => console.log(error))
+}
+
 // Reducers
 const initialState = {
     orders: [],
 		order: {},
 		carts: [],
-		cart: {},
+    cart: {},
+    cartLen: 0,
     isFetching: false,
 }
 
@@ -86,7 +110,11 @@ const orders = (state = initialState, action) => {
 					return { ...state, cart: action.order, isFetching: false };
 				} else {
 					return { ...state, order: action.order, isFetching: false };
-					}
+          }
+      case UPDATE_CARTLEN:
+        return {...state, cartLen: action.length};
+          case CHECKOUT:
+        return {...state, cart: {}};
       default:
         return state;
     }

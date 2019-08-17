@@ -86,7 +86,7 @@ class Navbar extends React.Component {
 const mapStateToProps = state => ({
   loggedInUser: state.users.loggedInUser,
   loggedIn: state.users.loggedIn,
-  cartLen: state.cart.length, // doesn't work yet TODO
+  cartLen: state.orders.cartLen,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
