@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../connection');
 
-const Product = db.define('Product', {
+const Product = db.define('product', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
@@ -21,7 +21,11 @@ const Product = db.define('Product', {
     type: Sequelize.STRING,
   },
   price: {
-    type: Sequelize.DECIMAL,
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
   },
 });
 

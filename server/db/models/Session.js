@@ -2,18 +2,15 @@ const Sequelize = require('sequelize');
 const db = require('../connection');
 
 const Session = db.define('Session', {
-  id: {
-    type: Sequelize.UUID,
-    allowNull: false,
-    defaultValue: Sequelize.UUIDV4,
+  sid: {
+    type: Sequelize.STRING,
     primaryKey: true,
   },
-  sessionId: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
+  expires: {
+    type: Sequelize.DATE,
+  },
+  data: {
+    type: Sequelize.STRING(50000),
   },
 });
 

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../connection');
 
-const Category = db.define('Category', {
+const Category = db.define('category', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,

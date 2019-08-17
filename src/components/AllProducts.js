@@ -1,33 +1,65 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { fetchProducts } from '../redux/reducers/product';
+import { postOrder } from '../redux/reducers/order';
+import { FrontBanner, SingleProductOnAllProducts } from './index';
+import { Grid } from '@material-ui/core';
+import { FilterContainer } from './index';
+
+class AllProducts extends React.Component {
+  componentDidMount() {
+    this.props.fetchProducts();
+  }
+
+  render() {
+    const { products, addToCart } = this.props;
+    return (
+      <div>
+        <FrontBanner />
+        <FilterContainer products={products} />
+        <Grid container spacing={10} justify="center">
+          {products.map(product => {
+            const { supplier, category } = product;
+            return (
+              <SingleProductOnAllProducts
+                key={product.id}
+                product={product}
+                supplier={supplier}
+                category={category}
+                addToCart={addToCart}
+              />
+            );
+          })}
+        </Grid>
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = state => {
   return {
-    products: state.products,
+    products: state.products.products,
   };
 };
 
-const AllProducts = props => {
-  return (
-    <div>
-      <ul>
-        {props.products.map(product => {
-          return (
-            <li>
-              <ul>
-                <li>Name: {product.name}</li>
-                <li>
-                  <img src={product.imageUrl} />
-                </li>
-                <li>Description: {product.description}</li>
-                <li>Price: {product.price}</li>
-              </ul>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchProducts: () => dispatch(fetchProducts()),
+    addToCart: order => dispatch(postOrder(order)),
+  };
 };
 
-export default connect(mapStateToProps)(AllProducts);
+// proptypes to do typechecking
+AllProducts.propTypes = {
+  products: PropTypes.array,
+  fetchProducts: PropTypes.func,
+  addToCart: PropTypes.func,
+};
+
+const ConnectedAllProducts = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AllProducts);
+
+export default ConnectedAllProducts;

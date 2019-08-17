@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../connection');
 
-const Supplier = db.define('Supplier', {
+const Supplier = db.define('supplier', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,

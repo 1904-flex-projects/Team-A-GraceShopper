@@ -4,28 +4,35 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx webpack src/index.js -o ./public/bundle.js --watch & npx nodemon ./server/index.js -q",
-    "test": "npx jest ./tests/**/**/*.spec.js --watch"
+    "test": "npx jest ./tests/setup.js ./tests/**/*.spec.js",
+    "test:dev": "npx jest ./tests/setup.js ./tests/**/*.spec.js --watch",
+    "start": "node server/index.js",
+    "build": "webpack -p",
+    "start:dev": "npx webpack src/index.js -o ./public/bundle.js --watch & npx nodemon ./server/index.js -q",
+    "seed": "node seed.js",
+    "lint": "./node_modules/.bin/eslint \"**/*.{js,jsx}\""
   },
   "dependencies": {
     "@material-ui/core": "^4.2.1",
     "@material-ui/icons": "^4.2.1",
     "axios": "^0.19.0",
-    "body-parser": "^1.16.1",
+    "connect-session-sequelize": "^6.0.0",
     "dotenv": "^8.0.0",
     "express": "^4.14.1",
+    "express-session": "^1.16.2",
     "morgan": "^1.8.1",
     "pg": "^6.1.2",
     "pg-hstore": "^2.3.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-particles-js": "^2.7.0",
     "react-redux": "^7.1.0",
     "react-router-dom": "^4.0.0",
     "redux": "^3.6.0",
-    "redux-devtools-extension": "^2.13.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
-    "sequelize": "^6.0.0"
+    "sequelize": "^5.12.2",
+    "typewriter-effect": "^2.10.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
@@ -39,13 +46,23 @@
     "@babel/plugin-proposal-throw-expressions": "^7.2.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/plugin-syntax-import-meta": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.5.5",
+    "@babel/runtime": "^7.5.5",
     "babel-loader": "^8.0.4",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
     "jest": "^24.8.0",
+    "prettier": "^1.18.2",
+    "prop-types": "^15.7.2",
+    "redux-devtools-extension": "^2.13.0",
+    "supertest": "^4.0.2",
     "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5"
   },
@@ -53,7 +70,17 @@
     "type": "git",
     "url": "git+https://github.com/naimoon6450/Team-A-GraceShopper.git"
   },
-  "author": "",
+  "contributors": [
+    {
+      "name": "Drew Mitchell"
+    },
+    {
+      "name": "Dylan Levene"
+    },
+    {
+      "name": "Naimun Siraj"
+    }
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/naimoon6450/Team-A-GraceShopper/issues"
