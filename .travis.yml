@@ -12,3 +12,10 @@ jobs:
   include:
     -script: npm run lint
     name: 'running ESLint'
+
+deploy:
+  provider: script
+  script: 'cp .npmrc.template $HOME/.npmrc && npm publish'
+  skip_cleanup: false
+  on:
+    tags: true

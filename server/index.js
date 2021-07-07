@@ -84,7 +84,7 @@ app.use((error, req, res, next) => {
 db.sync({force: process.env.DB_FORCE === 'true'})
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`Server listening on PORT: ${PORT}`);
+      //console.log(`Server listening on PORT: ${PORT}`);
     });
   })
   .catch(e => console.error(e));
